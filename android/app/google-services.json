@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "133113252991",
+    "firebase_url": "https://rnquizapp-3dac6.firebaseio.com",
+    "project_id": "rnquizapp-3dac6",
+    "storage_bucket": "rnquizapp-3dac6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133113252991:android:b912ce73e7fd6a98f8834a",
+        "android_client_info": {
+          "package_name": "com.rnquizapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "133113252991-3dvge5v9q9g6bc6g52b789cifr7m1gm2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg28NKB2GzybzFQqf8NZk2ebfmQmiC4yI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "133113252991-3dvge5v9q9g6bc6g52b789cifr7m1gm2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

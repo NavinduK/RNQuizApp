@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {StyleSheet, Text, View, Button, TouchableOpacity  } from 'react-native';
+import {StyleSheet, Text, View, Button, TouchableOpacity,ToastAndroid, Vibration  } from 'react-native';
 import ResultScreen from './Results';
 import QuizData from './QuizData';
 
@@ -7,7 +7,7 @@ export default function QuizScreen(){
     const [next,setNext] = useState(0);
     const [marks,setMarks] = useState(0);
     const [numberOfQuestions,setNumberOfQuestions] = useState(10);
-	const [value,setValue] = useState(null);
+	const [value,setValue] = useState(0);
 	
 	//To change answer Button Colors when select
     const [button1Color,setButton1Color] = useState("#D63A55");
@@ -16,19 +16,28 @@ export default function QuizScreen(){
     const [button4Color,setButton4Color] = useState("#D63A55");
 	  
 	const clickNext=() =>{
-		if (value === QuizData[next].correct_value) {
-      		setMarks(marks + 1);
+		if(value==0){
+			ToastAndroid.show("Please select an answer to continue!", ToastAndroid.SHORT);
+			Vibration.vibrate(1000);
 		}
-		setNext(next + 1);
-		setButton1Color("#D63A55");
-		setButton2Color("#D63A55");
-		setButton3Color("#D63A55");
-		setButton4Color("#D63A55");
+		else{
+			if (value === QuizData[next].correct_value) {
+				setMarks(marks + 1);
+			}
+			setNext(next + 1);
+			setValue(0);
+			setButton1Color("#D63A55");
+			setButton2Color("#D63A55");
+			setButton3Color("#D63A55");
+			setButton4Color("#D63A55");
+			Vibration.vibrate(100);
+		}
 	}
 
-	const playAgain=() =>{
+	const tryAgain=() =>{
 		setNext(0);
 		setMarks(0);
+		setValue(0);
 	}
 
 	const buttonHandler=(answer) =>{
@@ -64,9 +73,9 @@ export default function QuizScreen(){
 			{
 				next === numberOfQuestions
 					?
-					<View style={{ flex: 1 }}>
+					<View style={styles.container}>
 						<ResultScreen 
-							playAgain={playAgain}
+							tryAgain={tryAgain}
 							marks={marks}
 						/>
 					</View>
@@ -111,7 +120,7 @@ export default function QuizScreen(){
 								<View style={styles.nextButtonContainer}>
 									<TouchableOpacity
 										onPress={clickNext}
-										style={styles.nextButton}
+										style={[styles.nextButton,styles.boxWithShadow]}
 										color="#2C1040">
 									<Text style={styles.question}>NEXT</Text></TouchableOpacity>
 								</View>
@@ -153,18 +162,23 @@ const styles = StyleSheet.create({
 	},
 	questionCount:{
 		textAlign:'center',
-		color: "#fff",
+		color: "#2C1040",
 		fontSize: 25,
-		borderRadius:25,
-		backgroundColor:"#2C1040",
+		fontWeight:"bold",
+		borderRadius:145,
+		borderRightWidth:40,
+		borderLeftWidth:40,
+		borderColor:"#2C1040",
+		backgroundColor:"#D63A55",
 		width:"100%",
 		margin:"1%",
 		padding:"3%",
 	},
 	question:{
 		textAlign:'center',
-		color: "#fff",
+		color: "#D63A55",
 		fontSize: 20,
+		fontWeight:"bold",
 	},
 	questionContainer:{
 		height:"25%",
@@ -172,8 +186,9 @@ const styles = StyleSheet.create({
 	},
 	answers:{
 		textAlign:'center',
-		color: "#fff",
+		color: "#2C1040",
 		fontSize: 17,
+		fontWeight:"bold",
 		padding: "9%",
 	},
 	answerBox:{
@@ -200,8 +215,19 @@ const styles = StyleSheet.create({
 		width:"100%",
 		margin:"1%",
 		padding:"4%",
-		borderRadius:25,
+		borderRadius:145,
+		borderRightWidth:40,
+		borderLeftWidth:40,
+		borderColor:"#D63A55",
 		backgroundColor:"#2C1040",
 		marginTop: "5%",
-	}
+	},
+	boxWithShadow: {
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 0 },
+		shadowOpacity: 1,
+		shadowRadius: 1,  
+		elevation: 7
+
+	},
   });

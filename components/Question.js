@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Button } from 'react-native';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+import {StyleSheet, Text, View, Button, TouchableOpacity  } from 'react-native';
 import ResultScreen from './Results';
 import QuizData from './QuizData';
 
@@ -8,25 +7,60 @@ export default function QuizScreen(){
     const [next,setNext] = useState(0);
     const [marks,setMarks] = useState(0);
     const [numberOfQuestions,setNumberOfQuestions] = useState(10);
-    const [value,setValue] = useState(null);
-    const [correctValue,setCorrectValue] = useState(null);
+	const [value,setValue] = useState(null);
+	
+	//To change answer Button Colors when select
+    const [button1Color,setButton1Color] = useState("#D63A55");
+	const [button2Color,setButton2Color] = useState("#D63A55");
+	const [button3Color,setButton3Color] = useState("#D63A55");
+    const [button4Color,setButton4Color] = useState("#D63A55");
 	  
 	const clickNext=() =>{
-    	
-		
 		if (value === QuizData[next].correct_value) {
       		setMarks(marks + 1);
 		}
 		setNext(next + 1);
+		setButton1Color("#D63A55");
+		setButton2Color("#D63A55");
+		setButton3Color("#D63A55");
+		setButton4Color("#D63A55");
 	}
 
 	const playAgain=() =>{
 		setNext(0);
 		setMarks(0);
 	}
+
+	const buttonHandler=(answer) =>{
+		setValue(answer);
+		if(answer==1){
+			setButton1Color("#A99DB2");
+			setButton2Color("#D63A55");
+			setButton3Color("#D63A55");
+			setButton4Color("#D63A55");
+		}
+		else if(answer==2){
+			setButton2Color("#A99DB2");
+			setButton1Color("#D63A55");
+			setButton3Color("#D63A55");
+			setButton4Color("#D63A55");
+		}
+		else if(answer==3){
+			setButton3Color("#A99DB2");
+			setButton1Color("#D63A55");
+			setButton2Color("#D63A55");
+			setButton4Color("#D63A55");
+		}
+		else if(answer==4){
+			setButton4Color("#A99DB2");
+			setButton1Color("#D63A55");
+			setButton2Color("#D63A55");
+			setButton3Color("#D63A55");
+		}
+	}
 	
 	return (									
-		<View style={{ flex: 1 }}>
+		<View >
 			{
 				next === numberOfQuestions
 					?
@@ -37,38 +71,49 @@ export default function QuizScreen(){
 						/>
 					</View>
 					:
-					<View style={{ flex: 1 }}>
+					<View style={styles.container}>
 						{
-							
-							<View style={{ flex: 1 }}>
-								<View style={{ flex: 1 }}>
-									
-									<Text style={{marginLeft: 5, marginRight: 5, fontSize: 18}}>
-										{QuizData[next].question}
+							<View style={styles.quizContainer} >
+								<View style={styles.questionCountContainer}>
+									<Text style={styles.questionCount}>
+										{next+1}/10
 									</Text>
-									
-									<View style={{marginLeft: 15 }}>
-									<RadioForm
-										radio_props={[
-											{ label: QuizData[next].answers[0], value: 1 },
-											{ label: QuizData[next].answers[1], value: 2 },
-											{ label: QuizData[next].answers[2], value: 3 },
-											{ label: QuizData[next].answers[3], value: 4 },
-										]}
-										initial={0}
-										buttonColor={'#03A9F4'}
-										selectedButtonColor={'#03A9F4'}
-										buttonSize={20}
-										onPress={(value) => {setValue(value)}}
-									/>
+								</View>
+								<View style={styles.quizBox}>
+									<View style={styles.questionContainer}>
+										<Text style={styles.question}>
+											{QuizData[next].question}
+										</Text>
+									</View>
+									<View style={styles.answerBox}>
+										<View style={styles.answerBoxRow}>
+											<TouchableOpacity
+												style={[styles.answerButton,{backgroundColor: button1Color}]}
+												onPress={() => {buttonHandler(1)}}
+											><Text style={styles.answers}>{QuizData[next].answers[0]}</Text></TouchableOpacity>
+											<TouchableOpacity 
+												style={[styles.answerButton,{backgroundColor: button2Color}]}
+												onPress={() => {buttonHandler(2)}}
+											><Text style={styles.answers}>{QuizData[next].answers[1]}</Text></TouchableOpacity>
+										</View>
+										<View style={styles.answerBoxRow}>
+											<TouchableOpacity
+												style={[styles.answerButton,{backgroundColor: button3Color}]}
+												onPress={() => {buttonHandler(3)}}
+											><Text style={styles.answers}>{QuizData[next].answers[2]}</Text></TouchableOpacity>
+											<TouchableOpacity 
+												style={[styles.answerButton,{backgroundColor: button4Color}]}
+												onPress={() => {buttonHandler(4)}}
+											><Text style={styles.answers}>{QuizData[next].answers[3]}</Text></TouchableOpacity>
+										</View>
 									</View>
 								</View>
-								<View style={{width: 200, fontWeight: 'bold', marginLeft: 'auto', marginRight: 'auto', marginTop: 0, marginBottom: 40}}>
-								<Button
-									onPress={clickNext}
-									title="Next"
-									backgroundColor="#03A9F4"							
-								/>
+								<View style={styles.nextButtonContainer}>
+									<TouchableOpacity
+										onPress={clickNext}
+										style={styles.nextButton}
+										color="#2C1040">
+									<Text style={styles.question}>NEXT</Text></TouchableOpacity>
 								</View>
 							</View>
 						}
@@ -77,3 +122,86 @@ export default function QuizScreen(){
 		</View>							
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+	  flex: 1,
+	  alignItems: 'center',
+	  justifyContent: 'center',
+	  width:"100%",
+	},
+	quizContainer:{
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		width:"95%",
+	},
+	quizBox:{
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius:25,
+		backgroundColor:"#2C1040",
+		width:"100%"
+	},
+	questionCountContainer:{
+		flex:1,
+		justifyContent: 'flex-end',
+		width:"100%",
+		alignItems: 'center',
+		marginBottom: "5%",
+	},
+	questionCount:{
+		textAlign:'center',
+		color: "#fff",
+		fontSize: 25,
+		borderRadius:25,
+		backgroundColor:"#2C1040",
+		width:"100%",
+		margin:"1%",
+		padding:"3%",
+	},
+	question:{
+		textAlign:'center',
+		color: "#fff",
+		fontSize: 20,
+	},
+	questionContainer:{
+		height:"25%",
+		width:"90%"
+	},
+	answers:{
+		textAlign:'center',
+		color: "#fff",
+		fontSize: 17,
+		padding: "9%",
+	},
+	answerBox:{
+		marginTop: "2%",
+		alignItems: 'center',
+	},
+	answerBoxRow:{
+		marginTop: "1%",
+		flexDirection: 'row',
+		width:"100%",
+	},
+	answerButton:{
+		width:"44%",
+		margin:"2%",
+		borderRadius:25,
+	},
+	nextButtonContainer:{
+		flex:1,
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		width:"100%",
+	},
+	nextButton:{
+		width:"100%",
+		margin:"1%",
+		padding:"4%",
+		borderRadius:25,
+		backgroundColor:"#2C1040",
+		marginTop: "5%",
+	}
+  });

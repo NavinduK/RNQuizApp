@@ -7,8 +7,8 @@ import Question from './components/Question';
 export default function App() {
 
   return (
-        <LinearGradient colors={['#2C1040', '#D63A55']} style={styles.container}>
-				  <View style={{ flex: 1 }}>
+        <LinearGradient colors={['#2C1040','#79234A', '#D63A55']} style={styles.container}>
+				  <View>
 						<Question/>
 					</View>
         </LinearGradient>

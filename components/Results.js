@@ -13,7 +13,7 @@ export default function ResultScreen({tryAgain,marks}){
 									onPress={tryAgain}
 									style={[styles.againButton,styles.boxWithShadow]}
 									color="#2C1040">
-								<Text style={styles.buttonText}>Try Again</Text></TouchableOpacity>
+								<Text style={styles.buttonText}>TRY AGAIN</Text></TouchableOpacity>
 							</View>
 						</View>
 		);

@@ -1,9 +1,9 @@
 import React, { useState, useRef,useEffect } from "react";
 import {StyleSheet, Text, View, Button, TouchableOpacity,ToastAndroid, Vibration, Animated } from 'react-native';
 import ResultScreen from './Results';
-import QuizData from './QuizData';
+//import QuizData from './QuizData';
 
-export default function QuizScreen(){
+export default function QuizScreen(QuizData){
     const [next,setNext] = useState(0);
     const [marks,setMarks] = useState(0);
     const [numberOfQuestions,setNumberOfQuestions] = useState(0);
@@ -20,6 +20,7 @@ export default function QuizScreen(){
 	const springValueNext = useRef(new Animated.Value(1)).current;
 
 	useEffect(() => {
+		//console.log(QuizData);
 		setNumberOfQuestions(QuizData.length);
 		Animated.sequence([
 			Animated.timing(springValueStart,{
@@ -56,7 +57,7 @@ export default function QuizScreen(){
 					useNativeDriver: true
 				}),
 			]).start();
-			if (value === QuizData[next].correct_value) {
+			if (value === QuizData[next].ansC) {
 				setMarks(marks + 1);
 			}
 			setValue(0);
@@ -128,7 +129,7 @@ export default function QuizScreen(){
 								<Animated.View style={{transform:[{scale:springValueNext}]}}>
 									<View style={styles.questionContainer}>
 										<Text style={styles.question}>
-											{QuizData[next].question}
+											{QuizData[next].ques}
 										</Text>
 									</View>
 									<View style={styles.answerBox}>
@@ -136,21 +137,21 @@ export default function QuizScreen(){
 											<TouchableOpacity
 												style={[styles.answerButton,{backgroundColor: button1Color}]}
 												onPress={() => {buttonHandler(1)}}
-											><Text style={styles.answers}>{QuizData[next].answers[0]}</Text></TouchableOpacity>
+											><Text style={styles.answers}>{QuizData[next].ans1}</Text></TouchableOpacity>
 											<TouchableOpacity 
 												style={[styles.answerButton,{backgroundColor: button2Color}]}
 												onPress={() => {buttonHandler(2)}}
-											><Text style={styles.answers}>{QuizData[next].answers[1]}</Text></TouchableOpacity>
+											><Text style={styles.answers}>{QuizData[next].ans2}</Text></TouchableOpacity>
 										</View>
 										<View style={styles.answerBoxRow}>
 											<TouchableOpacity
 												style={[styles.answerButton,{backgroundColor: button3Color}]}
 												onPress={() => {buttonHandler(3)}}
-											><Text style={styles.answers}>{QuizData[next].answers[2]}</Text></TouchableOpacity>
+											><Text style={styles.answers}>{QuizData[next].ans3}</Text></TouchableOpacity>
 											<TouchableOpacity 
 												style={[styles.answerButton,{backgroundColor: button4Color}]}
 												onPress={() => {buttonHandler(4)}}
-											><Text style={styles.answers}>{QuizData[next].answers[3]}</Text></TouchableOpacity>
+											><Text style={styles.answers}>{QuizData[next].ans4}</Text></TouchableOpacity>
 										</View>
 									</View>
 									</Animated.View>

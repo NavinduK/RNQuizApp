@@ -1,11 +1,11 @@
-import React, { useState, useRef,useEffect } from "react";
-import {StyleSheet, Text, View, Button, TouchableOpacity,ToastAndroid, Vibration, Animated } from 'react-native';
+import React, { useState, useRef, useLayoutEffect } from "react";
+import {StyleSheet, Text, View, TouchableOpacity,ToastAndroid, Vibration, Animated } from 'react-native';
 import ResultScreen from './Results';
 //import QuizData from './QuizData';
 import firebase from "../firebase";
 import 'firebase/firestore';
 
-export default function QuizScreen(){
+const QuizScreen=()=>{
     const [next,setNext] = useState(0);
     const [marks,setMarks] = useState(0);
     const [numberOfQuestions,setNumberOfQuestions] = useState(0);
@@ -23,19 +23,12 @@ export default function QuizScreen(){
 
 	const [QuizData,setQuizData] = useState([]);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			const db = firebase.firestore();
-			const dataQ = await db.collection("quiz").get();
-			
-			  setQuizData(dataQ.docs.map((doc) => doc.data()));
-			  console.log(QuizData);
-			
-		  };
-		  fetchData();
-		console.log(QuizData);
-		setNumberOfQuestions(QuizData.length);
+	useLayoutEffect(() => {
 		
+		fetchData();
+		// console.log(QuizData);
+		setNumberOfQuestions(2);
+
 		Animated.sequence([
 			Animated.timing(springValueStart,{
 				toValue:0.3,
@@ -48,8 +41,27 @@ export default function QuizScreen(){
 				useNativeDriver: true
 			}),
 		]).start();
-	  }, []);
-  
+	},[]);
+
+	const fetchData = async() => {
+		// firebase.database().ref('quiz').once('value').then(snapshot => {
+		// 	setQuizData(snapshot.val());
+		// })
+		const db = firebase.firestore();
+		const dataQ = await db.collection("quiz").get();
+		setQuizData(dataQ.docs.map((doc) => doc.data()));
+		console.log("");
+		// setQuizData({
+		// 	"ans1": "plays",
+		// 	"ans2": "play",
+		// 	"ans3": "am playing",
+		// 	"ans4": "playing",
+		// 	"ansC": 2,
+		// 	"question": "I ______ tennis every Sunday morning.",
+		//   });
+		// alert(QuizData);
+	};
+	
 
 	const clickNext=() =>{
 		//springValueNext = useRef(new Animated.Value(0.5)).current;
@@ -118,14 +130,15 @@ export default function QuizScreen(){
 			setButton3Color("#D63A55");
 		}
 	}
-	
-	return (									
+	/* <View><Text>{QuizData.question}</Text></View> */
+	return (	
+		
 		<View >
 			{
 				next === numberOfQuestions
 					?
 					<View style={styles.container}>
-						<ResultScreen 
+						<ResultScreen
 							tryAgain={tryAgain}
 							marks={marks}
 						/>
@@ -176,7 +189,6 @@ export default function QuizScreen(){
 										style={[styles.nextButton,styles.boxWithShadow]}
 										color="#2C1040">
 									<Text style={styles.question}>NEXT</Text></TouchableOpacity>
-
 								</View>
 							</View>
 						}
@@ -293,3 +305,5 @@ const styles = StyleSheet.create({
 
 	},
   });
+
+  export default QuizScreen;

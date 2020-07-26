@@ -27,7 +27,7 @@ const QuizScreen=()=>{
 		
 		fetchData();
 		// console.log(QuizData);
-		setNumberOfQuestions(2);
+		setNumberOfQuestions(10);
 
 		Animated.sequence([
 			Animated.timing(springValueStart,{

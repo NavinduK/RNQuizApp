@@ -4,10 +4,7 @@ import { StyleSheet, Text, View, Button, Image, ScrollView, TouchableWithoutFeed
 import { LinearGradient } from 'expo-linear-gradient';
 import Question from './components/Question';
 
-
 export default function App() {
-
-
   return (
         <LinearGradient colors={['#2C1040','#79234A', '#C73755']} style={styles.container}>
 				  <View>

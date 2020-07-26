@@ -1,7 +1,6 @@
 import React, { useState, useRef, useLayoutEffect } from "react";
 import {StyleSheet, Text, View, TouchableOpacity,ToastAndroid, Vibration, Animated } from 'react-native';
 import ResultScreen from './Results';
-//import QuizData from './QuizData';
 import firebase from "../firebase";
 import 'firebase/firestore';
 
@@ -24,9 +23,7 @@ const QuizScreen=()=>{
 	const [QuizData,setQuizData] = useState([]);
 
 	useLayoutEffect(() => {
-		
 		fetchData();
-		// console.log(QuizData);
 		setNumberOfQuestions(10);
 
 		Animated.sequence([
@@ -44,28 +41,13 @@ const QuizScreen=()=>{
 	},[]);
 
 	const fetchData = async() => {
-		// firebase.database().ref('quiz').once('value').then(snapshot => {
-		// 	setQuizData(snapshot.val());
-		// })
 		const db = firebase.firestore();
 		const dataQ = await db.collection("quiz").get();
 		setQuizData(dataQ.docs.map((doc) => doc.data()));
-		console.log("");
-		// setQuizData({
-		// 	"ans1": "plays",
-		// 	"ans2": "play",
-		// 	"ans3": "am playing",
-		// 	"ans4": "playing",
-		// 	"ansC": 2,
-		// 	"question": "I ______ tennis every Sunday morning.",
-		//   });
-		// alert(QuizData);
 	};
 	
 
 	const clickNext=() =>{
-		//springValueNext = useRef(new Animated.Value(0.5)).current;
-		
 		if(value==0){
 			ToastAndroid.show("Please select an answer to continue!", ToastAndroid.SHORT);
 			Vibration.vibrate(1000);
@@ -130,9 +112,8 @@ const QuizScreen=()=>{
 			setButton3Color("#D63A55");
 		}
 	}
-	/* <View><Text>{QuizData.question}</Text></View> */
-	return (	
-		
+	
+	return (
 		<View >
 			{
 				next === numberOfQuestions
